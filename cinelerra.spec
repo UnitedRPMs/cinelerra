@@ -78,6 +78,8 @@ make DESTDIR=%{buildroot} install
 %find_lang %{name}
 
 %files -f %{name}.lang
+%license COPYING
+%doc README
 %{_bindir}/cinelerra
 %{_bindir}/cin_db
 %{_bindir}/zmpeg3cat
