@@ -70,7 +70,7 @@ CFG_VARS="\
 CFLAGS+=' -Wno-narrowing -O2 -g -fno-omit-frame-pointer' \
 CXXFLAGS+=' -Wno-narrowing -O2 -g -fno-omit-frame-pointer' \
 WERROR_CFLAGS+=' -fpermissive'" \
-  make -j$jobs
+  make -j$jobs V=0
 
 %install
 make DESTDIR=%{buildroot} install
