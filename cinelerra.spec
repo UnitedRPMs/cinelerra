@@ -63,6 +63,9 @@ sed -i 's/\<python\>/python2.7/' guicast/Makefile
 # SUPER POWER!
 jobs=$(grep processor /proc/cpuinfo | tail -1 | grep -o '[0-9]*')
 
+# https://fedoraproject.org/wiki/Changes/Avoid_usr_bin_python_in_RPM_Build#Quick_Opt-Out
+export PYTHON_DISALLOW_AMBIGUOUS_VERSION=0
+
 ./autogen.sh
   export FFMPEG_EXTRA_CFG=" --disable-vdpau" 
   ./configure --prefix=%{_prefix} --with-exec-name=cinelerra --with-jobs=$jobs --with-opencv=sys --enable-x265 --enable-x264 --enable-libvpx --enable-fftw --enable-flac --enable-lame --enable-opus
@@ -73,7 +76,7 @@ WERROR_CFLAGS+=' -fpermissive'" \
   make -j$jobs V=0
 
 %install
-make DESTDIR=%{buildroot} install
+make DESTDIR=%{buildroot} install V=0
 
 %find_lang %{name}
 
