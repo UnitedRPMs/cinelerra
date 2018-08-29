@@ -52,6 +52,9 @@ BuildRequires:	xz-devel
 BuildRequires:	gettext
 BuildRequires:  perl-interpreter
 BuildRequires:  gcc-c++
+%if 0%{?fedora} >= 29
+BuildRequires:	python-unversioned-command
+%endif
 %if 0%{?fedora} <= 27
 BuildRequires:	ladspa-devel
 %endif
