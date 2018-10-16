@@ -1,12 +1,12 @@
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-cv.org/gitweb?p=goodguy/cinelerra.git
-%global commit0 667e703a0f3a9ba52b2a917cd8ee50a8115b27dc
+%global commit0 2ce5f3585284c78107b6eab879ee4e94686ff41a
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
 Group:          Applications/Multimedia
@@ -69,11 +69,13 @@ This is the community-maintained version of Cinelerra.
 
 
 %prep
-%autosetup -n %{name}-%{shortcommit0} -p1
+%setup -n %{name}-%{shortcommit0} 
+pushd cinelerra-%{version}
+%patch -p1
 sed -i 's/\<python\>/python2.7/' guicast/Makefile
 
 %build
-
+pushd cinelerra-%{version}
 # SUPER POWER!
 jobs=$(grep processor /proc/cpuinfo | tail -1 | grep -o '[0-9]*')
 
@@ -107,13 +109,14 @@ export FFMPEG_EXTRA_CFG=" --disable-vdpau"
 make -j$jobs V=0
 
 %install
+pushd cinelerra-%{version}
 make DESTDIR=%{buildroot} install V=0
 
 %find_lang %{name}
 
-%files -f %{name}.lang
-%license COPYING
-%doc README
+%files -f cinelerra-%{version}/%{name}.lang 
+%license cinelerra-%{version}/COPYING
+%doc cinelerra-%{version}/README
 %{_bindir}/cinelerra
 %{_bindir}/cin_db
 %{_bindir}/zmpeg3cat
@@ -121,6 +124,7 @@ make DESTDIR=%{buildroot} install V=0
 %{_bindir}/zmpeg3ifochk
 %{_bindir}/zmpeg3show
 %{_bindir}/zmpeg3toc
+%{_bindir}/bdwrite
 %{_datadir}/cinelerra/
 %{_libdir}/cinelerra/
 %{_datadir}/applications/cinelerra.desktop
@@ -129,6 +133,9 @@ make DESTDIR=%{buildroot} install V=0
 
 
 %changelog
+
+* Sun Oct 14 2018 David Va <davidva AT tuta DOT io> - 5.1-3
+- Updated to current commit
 
 * Sat Jun 16 2018 David Va <davidva AT tuta DOT io> - 5.1-2
 - Updated to current commit
