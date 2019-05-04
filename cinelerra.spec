@@ -1,26 +1,28 @@
 # Tips thanks to goodguy
-# Current commit https://git.cinelerra-cv.org/gitweb?p=goodguy/cinelerra.git
-%global commit0 0ee81fd8911a2b72c2e1c3288decd681aa173703
+# Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
+%global commit0 97552ff95c1bf20be9192b8101f61de5490eff20
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	4%{?dist}
+Release:	5%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
 Group:          Applications/Multimedia
-Url:            http://cinelerra-cv.org/
-Source0:	https://git.cinelerra-cv.org/gitweb?p=goodguy/cinelerra.git;a=snapshot;h=%{commit0};sf=tgz#/%{name}-%{shortcommit0}.tar.gz
+Url:            https://www.cinelerra-gg.org/
+Source0:	https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=snapshot;h=%{commit0};sf=tgz#/%{name}-%{shortcommit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+
 Patch:		unblock.patch
+Patch1:		dep.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(libdv)
-BuildRequires:  pkgconfig(mjpegtools)
+BuildRequires:  mjpegtools-devel
 BuildRequires:  pkgconfig(xv)
 BuildRequires:  faac-devel
 BuildRequires:  yasm 
@@ -53,6 +55,12 @@ BuildRequires:	xz-devel
 BuildRequires:	gettext
 BuildRequires:  perl-interpreter
 BuildRequires:  gcc-c++
+BuildRequires:	libvorbis-devel
+# new
+BuildRequires:	libusb-devel
+BuildRequires:	esound-devel
+BuildRequires:	liba52-devel
+BuildRequires:	giflib-devel
 %if 0%{?fedora} >= 29
 BuildRequires:	python-unversioned-command
 %endif
@@ -71,17 +79,16 @@ This is the community-maintained version of Cinelerra.
 
 %prep
 %setup -n %{name}-%{shortcommit0} 
+
 pushd cinelerra-%{version}
 %patch -p1
+%patch1 -p1
 sed -i 's/\<python\>/python2.7/' guicast/Makefile
 
 %build
 pushd cinelerra-%{version}
 # SUPER POWER!
 jobs=$(grep processor /proc/cpuinfo | tail -1 | grep -o '[0-9]*')
-
-# https://fedoraproject.org/wiki/Changes/Avoid_usr_bin_python_in_RPM_Build#Quick_Opt-Out
-export PYTHON_DISALLOW_AMBIGUOUS_VERSION=0
 
 export CC="gcc"
 export CXX="g++"
@@ -134,6 +141,10 @@ make DESTDIR=%{buildroot} install V=0
 
 
 %changelog
+
+* Fri May 03 2019 David Va <davidva AT tuta DOT io> - 5.1-5
+- Updated to current commit
+- Sources and site changed to Cinelerra Infiniy
 
 * Thu Dec 13 2018 David Va <davidva AT tuta DOT io> - 5.1-4
 - Updated to current commit
