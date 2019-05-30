@@ -1,12 +1,12 @@
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 97552ff95c1bf20be9192b8101f61de5490eff20
+%global commit0 3305343c3d9bfb889f6892e7821cc0e2d68669de
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	5%{?dist}
+Release:	6%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
@@ -79,9 +79,8 @@ This is the community-maintained version of Cinelerra.
 
 %prep
 %setup -n %{name}-%{shortcommit0} 
-
-pushd cinelerra-%{version}
 %patch -p1
+pushd cinelerra-%{version}
 %patch1 -p1
 sed -i 's/\<python\>/python2.7/' guicast/Makefile
 
@@ -141,6 +140,9 @@ make DESTDIR=%{buildroot} install V=0
 
 
 %changelog
+
+* Wed May 29 2019 David Va <davidva AT tuta DOT io> - 5.1-6
+- Updated to current commit
 
 * Fri May 03 2019 David Va <davidva AT tuta DOT io> - 5.1-5
 - Updated to current commit

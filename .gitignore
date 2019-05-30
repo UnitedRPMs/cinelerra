@@ -3,5 +3,8 @@ BUILDROOT/*
 RPMS/*
 SPECS/*
 SRPMS/*
+new/
+orig/
 cin*.tgz
 cin*.tar.gz
+*.rpm

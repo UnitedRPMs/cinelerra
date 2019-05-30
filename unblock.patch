@@ -1,6 +1,7 @@
---- a/configure.ac	2017-09-30 11:23:49.000000000 -0400
-+++ b/configure.ac	2017-09-30 11:50:09.161783427 -0400
-@@ -617,7 +617,7 @@
+diff -ruN orig/cinelerra-5.1/configure.ac new/cinelerra-5.1/configure.ac
+--- orig/cinelerra-5.1/configure.ac	2019-05-29 17:06:57.000000000 -0600
++++ new/cinelerra-5.1/configure.ac	2019-05-29 20:10:42.913506167 -0600
+@@ -688,7 +688,7 @@
  
  CHECK_WANT([EXR], [auto], [use exr], [])
  
@@ -9,12 +10,13 @@
  ])
  
  CHECK_WANT([NUMA], [auto], [system has libnuma], [
---- a/plugins/Makefile	2017-09-14 22:39:40.000000000 -0400
-+++ b/plugins/Makefile	2017-09-14 23:11:23.993558505 -0400
-@@ -151,14 +151,9 @@
- 	theme_pinklady \
+diff -ruN orig/cinelerra-5.1/plugins/Makefile new/cinelerra-5.1/plugins/Makefile
+--- orig/cinelerra-5.1/plugins/Makefile	2019-05-29 17:06:57.000000000 -0600
++++ new/cinelerra-5.1/plugins/Makefile	2019-05-29 20:12:43.824654174 -0600
+@@ -157,14 +157,9 @@
  	theme_suv \
  	theme_unflat \
+ 	theme_cakewalk \
 -
 -# too costly
 -#	findobject \
