@@ -67,6 +67,7 @@ BuildRequires:	python-unversioned-command
 %if 0%{?fedora} <= 27
 BuildRequires:	ladspa-devel
 %endif
+BuildRequires:	libaom-devel
 Recommends:	opencv-xfeatures2d
 Recommends:	python2-opencv
 
