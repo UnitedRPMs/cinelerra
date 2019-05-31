@@ -14,7 +14,7 @@ Group:          Applications/Multimedia
 Url:            https://www.cinelerra-gg.org/
 Source0:	https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=snapshot;h=%{commit0};sf=tgz#/%{name}-%{shortcommit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
-Patch:		unblock.patch
+#Patch:		unblock.patch
 Patch1:		dep.patch
 
 BuildRequires:  autoconf
@@ -79,7 +79,7 @@ This is the community-maintained version of Cinelerra.
 
 %prep
 %setup -n %{name}-%{shortcommit0} 
-%patch -p1
+#patch -p1
 pushd cinelerra-%{version}
 %patch1 -p1
 sed -i 's/\<python\>/python2.7/' guicast/Makefile
