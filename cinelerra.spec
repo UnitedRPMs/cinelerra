@@ -68,6 +68,7 @@ BuildRequires:	python-unversioned-command
 BuildRequires:	ladspa-devel
 %endif
 BuildRequires:	libaom-devel
+BuildRequires:	libvpx-devel
 Recommends:	opencv-xfeatures2d
 Recommends:	python2-opencv
 
