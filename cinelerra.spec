@@ -1,6 +1,6 @@
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 075cbf87b7e1d1eb484ea9185490d898c664b77f
+%global commit0 bb4d66ab59531240df079c4b115d8f4d202d29ad
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
@@ -22,6 +22,8 @@ BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(libdv)
+BuildRequires:	pkgconfig(vdpau)
+BuildRequires:	pkgconfig(libva-drm)
 BuildRequires:  mjpegtools-devel
 BuildRequires:  pkgconfig(xv)
 BuildRequires:  faac-devel
@@ -43,8 +45,8 @@ BuildRequires:  opus-devel
 BuildRequires:  libtheora-devel 
 BuildRequires:  ctags 
 BuildRequires:  libtiff-devel
-BuildRequires:  opencv-devel >= 4.1.1
-BuildRequires:	opencv-xfeatures2d-devel >= 4.1.1
+BuildRequires:  opencv-devel >= 4.1.2
+BuildRequires:	opencv-xfeatures2d-devel >= 4.1.2
 BuildRequires:	texinfo
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ncurses-devel
@@ -69,8 +71,8 @@ BuildRequires:	ladspa-devel
 %endif
 BuildRequires:	libaom-devel
 BuildRequires:	libvpx-devel
-Recommends:	opencv-xfeatures2d >= 4.1.1
-Recommends:	python2-opencv >= 4.1.1
+Recommends:	opencv-xfeatures2d >= 4.1.2
+Recommends:	python2-opencv >= 4.1.2
 
 %description
 Non-linear audio/video authoring tool Cinelerra-CV is a complete audio and
@@ -142,6 +144,10 @@ make DESTDIR=%{buildroot} install V=0
 
 
 %changelog
+
+* Wed Oct 30 2019 David Va <davidva AT tuta DOT io> - 5.1-8
+- Rebuilt for opencv
+- Updated to current commit
 
 * Thu Sep 05 2019 David Va <davidva AT tuta DOT io> - 5.1-7
 - Updated to current commit
