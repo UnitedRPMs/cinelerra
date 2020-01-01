@@ -8,3 +8,4 @@ orig/
 cin*.tgz
 cin*.tar.gz
 *.rpm
+.directory

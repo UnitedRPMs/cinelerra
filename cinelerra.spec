@@ -6,7 +6,7 @@
 
 Name:           cinelerra
 Version:        5.1
-Release:	9%{?dist}
+Release:	10%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
@@ -45,8 +45,8 @@ BuildRequires:  opus-devel
 BuildRequires:  libtheora-devel 
 BuildRequires:  ctags 
 BuildRequires:  libtiff-devel
-BuildRequires:  opencv-devel >= 4.1.2
-BuildRequires:	opencv-xfeatures2d-devel >= 4.1.2
+BuildRequires:  opencv-devel >= 4.2.0
+BuildRequires:	opencv-xfeatures2d-devel >= 4.2.0
 BuildRequires:	texinfo
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ncurses-devel
@@ -71,8 +71,8 @@ BuildRequires:	ladspa-devel
 %endif
 BuildRequires:	libaom-devel
 BuildRequires:	libvpx-devel
-Recommends:	opencv-xfeatures2d >= 4.1.2
-Recommends:	python2-opencv >= 4.1.2
+Recommends:	opencv-xfeatures2d >= 4.2.0
+Recommends:	python2-opencv >= 4.2.0
 
 %description
 Non-linear audio/video authoring tool Cinelerra-CV is a complete audio and
@@ -144,6 +144,9 @@ make DESTDIR=%{buildroot} install V=0
 
 
 %changelog
+
+* Sun Dec 29 2019 David Va <davidva AT tuta DOT io> - 5.1-10
+- Rebuilt for opencv
 
 * Sun Dec 01 2019 David Va <davidva AT tuta DOT io> - 5.1-9
 - Updated to current commit
