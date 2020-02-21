@@ -1,7 +1,7 @@
-diff -ruN cinelerra-gg/cinelerra-5.1/configure.ac cinelerra-gg-new/cinelerra-5.1/configure.ac
---- a/configure.ac	2018-11-02 16:41:41.523009718 +0800
-+++ b/configure.ac	2018-11-02 16:42:45.643716648 +0800
-@@ -669,8 +669,8 @@
+diff -ruN orig/cinelerra-5.1/configure.ac new/cinelerra-5.1/configure.ac
+--- orig/cinelerra-5.1/configure.ac	2020-01-31 18:04:51.000000000 -0600
++++ new/cinelerra-5.1/configure.ac	2020-02-20 18:34:33.040052267 -0600
+@@ -776,8 +776,8 @@
  EXRIStream() : Imf::IStream("mypath") {} };
  class EXROStream : public Imf::OStream { public: 
  EXROStream() : Imf::OStream("mypath") {} };
@@ -10,21 +10,20 @@ diff -ruN cinelerra-gg/cinelerra-5.1/configure.ac cinelerra-gg-new/cinelerra-5.1
 +]])], [HAVE_openexr=yes], [HAVE_openexr=no])
 + RESULT="$HAVE_openexr"
   if test "x$RESULT" = "xyes"; then
-    SHARED_openexr="$LIBS"
-    CFG_CFLAGS+=" -I/usr/include/OpenEXR -I/usr/local/include/OpenEXR"
-@@ -678,9 +678,9 @@
+   SHARED_openexr="$LIBS"
+   SHARED_LIBS+=" $LIBS"
+@@ -786,9 +786,8 @@
   LIBS="$saved_LIBS"
   CXXFLAGS="$saved_CXXFLAGS"
   AC_LANG_POP(C++)
 - AC_MSG_RESULT([$HAVE_OPENEXR])
-+ AC_MSG_RESULT([$HAVE_openexr])
  ])
 -AC_SUBST([HAVE_OPENEXR])
 +AC_SUBST([HAVE_openexr])
  
  # build global_config
  OBJDIR=`uname -m`
-@@ -724,7 +724,7 @@
+@@ -832,7 +831,7 @@
          libtheora/libogg libtheora/libvorbis ; do
    lib=`dirname $dep`;  needs=`basename $dep`
    eval pkg_lib="\$PKG_$lib"; eval needs_lib="\$HAVE_$needs";

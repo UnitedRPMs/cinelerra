@@ -84,8 +84,9 @@ This is the community-maintained version of Cinelerra.
 %prep
 %setup -n %{name}-%{shortcommit0} 
 #patch -p1
-pushd cinelerra-%{version}
+
 %patch1 -p1
+pushd cinelerra-%{version}
 sed -i 's/\<python\>/python2.7/' guicast/Makefile
 
 %build
