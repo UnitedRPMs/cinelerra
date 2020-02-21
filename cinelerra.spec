@@ -1,12 +1,12 @@
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 98e035865979cda9805a58a85d52f8d70a7ec54e
+%global commit0 6487f2b33390bab8c318b357a398a195d758100c
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	10%{?dist}
+Release:	11%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
@@ -14,8 +14,8 @@ Group:          Applications/Multimedia
 Url:            https://www.cinelerra-gg.org/
 Source0:	https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=snapshot;h=%{commit0};sf=tgz#/%{name}-%{shortcommit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 
-#Patch:		unblock.patch
-Patch1:		dep.patch
+#Patch:unblock.patch
+Patch1:	dep.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -24,7 +24,7 @@ BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(libdv)
 BuildRequires:	pkgconfig(vdpau)
 BuildRequires:	pkgconfig(libva-drm)
-BuildRequires:  mjpegtools-devel
+BuildRequires:  libmpeg2-devel >= 0.3.2
 BuildRequires:  pkgconfig(xv)
 BuildRequires:  faac-devel
 BuildRequires:  yasm 
@@ -144,6 +144,9 @@ make DESTDIR=%{buildroot} install V=0
 
 
 %changelog
+
+* Thu Feb 20 2020 David Va <davidva AT tuta DOT io> - 5.1-11
+- Updated to current commit
 
 * Sun Dec 29 2019 David Va <davidva AT tuta DOT io> - 5.1-10
 - Rebuilt for opencv
