@@ -17,13 +17,13 @@
 
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 6487f2b33390bab8c318b357a398a195d758100c
+%global commit0 205a66f9f2abd6eac72076f773ce5d75921fa151
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	11%{?dist}
+Release:	12%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
@@ -62,8 +62,8 @@ BuildRequires:  opus-devel
 BuildRequires:  libtheora-devel 
 BuildRequires:  ctags 
 BuildRequires:  libtiff-devel
-BuildRequires:  opencv-devel >= 4.2.0
-BuildRequires:	opencv-xfeatures2d-devel >= 4.2.0
+BuildRequires:  opencv-devel >= 4.3.0
+BuildRequires:	opencv-xfeatures2d-devel >= 4.3.0
 BuildRequires:	texinfo
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ncurses-devel
@@ -162,6 +162,10 @@ make DESTDIR=%{buildroot} install V=0
 
 
 %changelog
+
+* Mon Apr 27 2020 David Va <davidva AT tuta DOT io> - 5.1-12
+- Rebuilt for opencv
+- Updated to current commit
 
 * Thu Feb 20 2020 David Va <davidva AT tuta DOT io> - 5.1-11
 - Updated to current commit
