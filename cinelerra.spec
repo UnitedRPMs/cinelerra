@@ -30,9 +30,10 @@ License:        GPLv2
 Group:          Applications/Multimedia
 Url:            https://www.cinelerra-gg.org/
 Source0:	https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=snapshot;h=%{commit0};sf=tgz#/%{name}-%{shortcommit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source1:	org.cinelerra_gg.cinelerra.metainfo.xml
 
 #Patch:unblock.patch
-Patch1:	dep.patch
+#Patch1:	dep.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -102,7 +103,7 @@ This is the community-maintained version of Cinelerra.
 %setup -n %{name}-%{shortcommit0} 
 #patch -p1
 
-%patch1 -p1
+#patch1 -p1
 pushd cinelerra-%{version}
 sed -i 's/\<python\>/python2.7/' guicast/Makefile
 
@@ -141,31 +142,31 @@ make -j$jobs V=0
 pushd cinelerra-%{version}
 make DESTDIR=%{buildroot} install V=0
 
+  # Metainfo
+  install -Dm 0644 %{S:1} %{buildroot}/%{_metainfodir}/org.cinelerra_gg.cinelerra.metainfo.xml
+
 %find_lang %{name}
 
 %files -f cinelerra-%{version}/%{name}.lang 
 %license cinelerra-%{version}/COPYING
 %doc cinelerra-%{version}/README
+%{_bindir}/bdwrite
 %{_bindir}/cinelerra
-%{_bindir}/cin_db
-%{_bindir}/zmpeg3cat
 %{_bindir}/zmpeg3cc2txt
 %{_bindir}/zmpeg3ifochk
-%{_bindir}/zmpeg3show
-%{_bindir}/zmpeg3toc
-%{_bindir}/bdwrite
 %{_datadir}/cinelerra/
 %{_libdir}/cinelerra/
 %{_datadir}/applications/cinelerra.desktop
 %{_datadir}/pixmaps/cinelerra.svg
 %{_datadir}/pixmaps/cinelerra.xpm
-
+%{_metainfodir}/org.cinelerra_gg.cinelerra.metainfo.xml
 
 %changelog
 
 * Mon Apr 27 2020 David Va <davidva AT tuta DOT io> - 5.1-12
 - Rebuilt for opencv
 - Updated to current commit
+- Metainfo added
 
 * Thu Feb 20 2020 David Va <davidva AT tuta DOT io> - 5.1-11
 - Updated to current commit

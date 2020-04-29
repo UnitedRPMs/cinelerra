@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.cinelerra_gg.cinelerra</id>
+  
+  <name>cinelerra</name>
+  <summary>A non linear video editor and effects processor</summary>
+  
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-2.0-only</project_license>
+  
+  <description>
+    <p>
+      Non-linear audio/video authoring tool Cinelerra-CV is a complete audio and video authoring tool. It understands a lot of multimedia formats as quicktime, avi, ogg also audio/video compression codecs divx, xvid, mpeg2. This is the community-maintained version of Cinelerra.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">cinelerra.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://upload.wikimedia.org/wikipedia/commons/d/d9/Screenshotcin3.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://www.cinelerra-gg.org/wp-content/uploads/2018/11/Cin-Desktop_04.jpg</image>
+    </screenshot>
+  </screenshots>
+</component> 
