@@ -17,13 +17,13 @@
 
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 205a66f9f2abd6eac72076f773ce5d75921fa151
+%global commit0 fa27f905f12b15ae84eb1b3ffcd12e09d6d02660
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	12%{?dist}
+Release:	13%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
@@ -82,12 +82,18 @@ BuildRequires:	esound-devel
 BuildRequires:	liba52-devel
 BuildRequires:	giflib-devel
 %if 0%{?fedora} >= 29
+BuildRequires:	python2-devel
 BuildRequires:	python-unversioned-command
+BuildRequires:	python2-rpm-macros
 %endif
 %if 0%{?fedora} <= 27
 BuildRequires:	ladspa-devel
 %endif
-BuildRequires:	libaom-devel
+%if 0%{?fedora} >= 33
+BuildRequires:  libaom-devel >= 2.0.0
+%else
+BuildRequires:  libaom-devel
+%endif
 BuildRequires:	libvpx-devel
 Recommends:	opencv-xfeatures2d >= 4.2.0
 Recommends:	python2-opencv >= 4.2.0
@@ -106,6 +112,7 @@ This is the community-maintained version of Cinelerra.
 #patch1 -p1
 pushd cinelerra-%{version}
 sed -i 's/\<python\>/python2.7/' guicast/Makefile
+find -depth -type f -writable -name "*.py" -exec sed -iE '1s=^#! */usr/bin/\(python\|env python\)[23]\?=#!%{__python2}=' {} +
 
 %build
 pushd cinelerra-%{version}
@@ -162,6 +169,10 @@ make DESTDIR=%{buildroot} install V=0
 %{_metainfodir}/org.cinelerra_gg.cinelerra.metainfo.xml
 
 %changelog
+
+* Wed Jul 08 2020 David Va <davidva AT tuta DOT io> - 5.1-13
+- Rebuilt for aom
+- Updated to current commit
 
 * Mon Apr 27 2020 David Va <davidva AT tuta DOT io> - 5.1-12
 - Rebuilt for opencv
