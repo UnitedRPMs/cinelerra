@@ -17,13 +17,13 @@
 
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 fa27f905f12b15ae84eb1b3ffcd12e09d6d02660
+%global commit0 2951f82f2d7e8edf91b42f610266fd84919dd5ef
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	13%{?dist}
+Release:	14%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
@@ -63,8 +63,8 @@ BuildRequires:  opus-devel
 BuildRequires:  libtheora-devel 
 BuildRequires:  ctags 
 BuildRequires:  libtiff-devel
-BuildRequires:  opencv-devel >= 4.3.0
-BuildRequires:	opencv-xfeatures2d-devel >= 4.3.0
+BuildRequires:  opencv-devel >= 4.4.0
+BuildRequires:	opencv-xfeatures2d-devel >= 4.4.0
 BuildRequires:	texinfo
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ncurses-devel
@@ -95,8 +95,8 @@ BuildRequires:  libaom-devel >= 2.0.0
 BuildRequires:  libaom-devel
 %endif
 BuildRequires:	libvpx-devel
-Recommends:	opencv-xfeatures2d >= 4.2.0
-Recommends:	python2-opencv >= 4.2.0
+Recommends:	opencv-xfeatures2d >= 4.4.0
+Recommends:	python2-opencv >= 4.4.0
 
 %description
 Non-linear audio/video authoring tool Cinelerra-CV is a complete audio and
@@ -169,6 +169,9 @@ make DESTDIR=%{buildroot} install V=0
 %{_metainfodir}/org.cinelerra_gg.cinelerra.metainfo.xml
 
 %changelog
+
+* Fri Aug 14 2020 David Va <davidva AT tuta DOT io> - 5.1-14
+- Rebuilt for opencv
 
 * Wed Jul 08 2020 David Va <davidva AT tuta DOT io> - 5.1-13
 - Rebuilt for aom
