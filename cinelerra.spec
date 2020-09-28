@@ -17,13 +17,13 @@
 
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 2951f82f2d7e8edf91b42f610266fd84919dd5ef
+%global commit0 232ae3c6972c1740b6e1890ccce1264f2bb311f5
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	14%{?dist}
+Release:	15%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
@@ -169,6 +169,9 @@ make DESTDIR=%{buildroot} install V=0
 %{_metainfodir}/org.cinelerra_gg.cinelerra.metainfo.xml
 
 %changelog
+
+* Mon Sep 28 2020 David Va <davidva AT tuta DOT io> - 5.1-15
+- Updated to current commit
 
 * Fri Aug 14 2020 David Va <davidva AT tuta DOT io> - 5.1-14
 - Rebuilt for opencv
