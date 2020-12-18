@@ -15,25 +15,30 @@
 # Please submit bugfixes or comments via https://goo.gl/zqFJft
 #
 
+%define _legacy_common_support 1
+%global _lto_cflags %{nil}
+%undefine _hardened_build
+
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 232ae3c6972c1740b6e1890ccce1264f2bb311f5
+%global commit0 5ab40dced664b758745cf1e8db73cdcf18152e12
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	15%{?dist}
+Release:	16%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
 Group:          Applications/Multimedia
 Url:            https://www.cinelerra-gg.org/
-Source0:	https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=snapshot;h=%{commit0};sf=tgz#/%{name}-%{shortcommit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0:	https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=snapshot;h=%{commit0};sf=zip#/%{name}-%{shortcommit0}.tar.gz
+
 Source1:	org.cinelerra_gg.cinelerra.metainfo.xml
 
 #Patch:unblock.patch
-#Patch1:	dep.patch
+Patch1:		gcc-openexr.patch
 
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -63,8 +68,10 @@ BuildRequires:  opus-devel
 BuildRequires:  libtheora-devel 
 BuildRequires:  ctags 
 BuildRequires:  libtiff-devel
+%if 0%{?fedora} <= 34
 BuildRequires:  opencv-devel >= 4.4.0
 BuildRequires:	opencv-xfeatures2d-devel >= 4.4.0
+%endif
 BuildRequires:	texinfo
 BuildRequires:	alsa-lib-devel
 BuildRequires:	ncurses-devel
@@ -89,14 +96,39 @@ BuildRequires:	python2-rpm-macros
 %if 0%{?fedora} <= 27
 BuildRequires:	ladspa-devel
 %endif
+BuildRequires:	libvpx-devel
+#BuildRequires:  pkgconfig(OpenEXR)
+BuildRequires:  pkgconfig(libwebp)
+BuildRequires:  pkgconfig(lv2)
+BuildRequires:  pkgconfig(lilv-0)
+BuildRequires:  pkgconfig(serd-0)
+BuildRequires:  pkgconfig(sratom-0)
+BuildRequires:  pkgconfig(suil-0)
+BuildRequires:  xorg-x11-font-utils
+BuildRequires:	ctags
+BuildRequires:	numactl-devel
+#----------------------------------------------------------------
+# Enabled support for internal ffmpeg
+%if 0%{?fedora} >= 34
+BuildRequires:	libdav1d-devel >= 0.8.0
+%else
+BuildRequires:	libdav1d-devel >= 0.5.2
+%endif
+#BuildRequires:	xvidcore-devel
+#BuildRequires:  libass-devel
+#BuildRequires:  libbluray-devel
+#BuildRequires:	snappy-devel
 %if 0%{?fedora} >= 33
 BuildRequires:  libaom-devel >= 2.0.0
 %else
 BuildRequires:  libaom-devel
 %endif
-BuildRequires:	libvpx-devel
+BuildRequires:	pulseaudio-libs-devel
+#----------------------------------------------------------------
+%if 0%{?fedora} <= 34
 Recommends:	opencv-xfeatures2d >= 4.4.0
 Recommends:	python2-opencv >= 4.4.0
+%endif
 
 %description
 Non-linear audio/video authoring tool Cinelerra-CV is a complete audio and
@@ -107,41 +139,56 @@ This is the community-maintained version of Cinelerra.
 
 %prep
 %setup -n %{name}-%{shortcommit0} 
-#patch -p1
 
-#patch1 -p1
 pushd cinelerra-%{version}
 sed -i 's/\<python\>/python2.7/' guicast/Makefile
 find -depth -type f -writable -name "*.py" -exec sed -iE '1s=^#! */usr/bin/\(python\|env python\)[23]\?=#!%{__python2}=' {} +
+
+pushd thirdparty/src/
+tar xJf openexr-2.4.1.tar.xz -C $PWD
+pushd openexr-2.4.1
+%patch1 -p1
+popd
+tar cJf openexr-2.4.1.tar.xz openexr-2.4.1
+  popd
+   popd
 
 %build
 pushd cinelerra-%{version}
 # SUPER POWER!
 jobs=$(grep processor /proc/cpuinfo | tail -1 | grep -o '[0-9]*')
 
-export CC="gcc"
-export CXX="g++"
-export CFLAGS+=" -Wwrite-strings -D__STDC_CONSTANT_MACROS"
-export CPPFLAGS="$CFLAGS"
+#export CC="gcc"
+#export CXX="g++"
+#export CFLAGS+=" -Wwrite-strings -D__STDC_CONSTANT_MACROS"
+#export CPPFLAGS="$CFLAGS"
 
-autoreconf -vfi
-#./autogen.sh
+#autoreconf -vfi
+./autogen.sh
 
-export FFMPEG_EXTRA_CFG=" --disable-vdpau" 
+export FFMPEG_EXTRA_CFG=" --disable-doc --disable-debug --arch=%{_target_cpu} --disable-lto" 
+sed -i 's|local/lib/pkgconfig|local/lib/pkgconfig,/usr/lib64/pkgconfig|g' thirdparty/Makefile
+
 ./configure --prefix=%{_prefix} \
+            --disable-dependency-tracking \
             --with-exec-name=cinelerra \
             --with-jobs=$jobs \
-            --with-opencv=sys \
             --enable-x265 \
             --enable-x264 \
-            --enable-libvpx \
             --enable-fftw \
             --enable-flac \
             --enable-lame \
             --enable-opus \
-%if 0%{?fedora} <= 27
-            --with-ladspa-build=no 
-%endif
+            --enable-lv2=shared \
+            --enable-lilv=shared \
+            --enable-serd=shared \
+            --enable-sratom=shared \
+            --enable-suil=shared \
+            --with-pulse \
+            --with-opencv=sys 
+            
+#             --without-opencv \            
+#--with-opencv=sta,tar=https://cinelerra-gg.org/download/opencv/opencv-20200306.tgz 
 
 make -j$jobs V=0
 
@@ -169,6 +216,9 @@ make DESTDIR=%{buildroot} install V=0
 %{_metainfodir}/org.cinelerra_gg.cinelerra.metainfo.xml
 
 %changelog
+
+* Mon Dec 14 2020 David Va <davidva AT tuta DOT io> - 5.1-16
+- Updated to current commit
 
 * Mon Sep 28 2020 David Va <davidva AT tuta DOT io> - 5.1-15
 - Updated to current commit
