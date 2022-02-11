@@ -1,11 +1,43 @@
-diff -ruN orig/OpenEXR/IlmImf/ImfTiledMisc.cpp new/OpenEXR/IlmImf/ImfTiledMisc.cpp
---- orig/OpenEXR/IlmImf/ImfTiledMisc.cpp	2020-02-10 17:01:19.000000000 -0600
-+++ new/OpenEXR/IlmImf/ImfTiledMisc.cpp	2020-12-17 14:45:53.542860961 -0600
-@@ -45,6 +45,7 @@
- #include <ImfChannelList.h>
- #include <ImfTileDescription.h>
- #include <algorithm>
-+#include <limits>
- 
- #include "ImfNamespace.h"
- 
+From cb6a90b929fde13d84509187a242750e5ba5ab48 Mon Sep 17 00:00:00 2001
+From: "FeRD (Frank Dana)" <ferdnyc@gmail.com>
+Date: Mon, 14 Dec 2020 02:07:46 -0500
+Subject: [PATCH] Add OpenEXR patch for GCC 11
+
+---
+ .../thirdparty/src/openexr-2.4.1.patch1       | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+ create mode 100644 cinelerra-5.1/thirdparty/src/openexr-2.4.1.patch1
+
+diff --git a/cinelerra-5.1/thirdparty/src/openexr-2.4.1.patch1 b/cinelerra-5.1/thirdparty/src/openexr-2.4.1.patch1
+new file mode 100644
+index 0000000..4f2cc65
+--- /dev/null
++++ b/cinelerra-5.1/thirdparty/src/openexr-2.4.1.patch1
+@@ -0,0 +1,24 @@
++From d891cfb0a2b8f6b48a9ede1a48aab022309100ed Mon Sep 17 00:00:00 2001
++From: "FeRD (Frank Dana)" <ferdnyc@gmail.com>
++Date: Mon, 14 Dec 2020 02:04:23 -0500
++Subject: [PATCH] Include limits for std::numeric_limits
++
++---
++ OpenEXR/IlmImf/ImfTiledMisc.cpp | 1 +
++ 1 file changed, 1 insertion(+)
++
++diff --git a/OpenEXR/IlmImf/ImfTiledMisc.cpp b/OpenEXR/IlmImf/ImfTiledMisc.cpp
++index 8552ada..bd865a1 100644
++--- a/OpenEXR/IlmImf/ImfTiledMisc.cpp
+++++ b/OpenEXR/IlmImf/ImfTiledMisc.cpp
++@@ -45,6 +45,7 @@
++ #include <ImfChannelList.h>
++ #include <ImfTileDescription.h>
++ #include <algorithm>
+++#include <limits>
++ 
++ #include "ImfNamespace.h"
++ 
++-- 
++2.29.2
++
+-- 
+2.29.2
+

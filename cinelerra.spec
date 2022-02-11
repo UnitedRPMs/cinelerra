@@ -1,7 +1,7 @@
 #
 # spec file for package cinelerra
 #
-# Copyright (c) 2020 UnitedRPMs.
+# Copyright (c) 2022 UnitedRPMs.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -21,13 +21,13 @@
 
 # Tips thanks to goodguy
 # Current commit https://git.cinelerra-gg.org/git/?p=goodguy/cinelerra.git;a=summary
-%global commit0 5ab40dced664b758745cf1e8db73cdcf18152e12
+%global commit0 c0c6e96a4ef619db6d002ecce3d799cc8da27066
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global gver .git%{shortcommit0}
 
 Name:           cinelerra
 Version:        5.1
-Release:	16%{?dist}
+Release:	17%{?dist}
 Epoch:		1
 Summary:        A non linear video editor and effects processor
 License:        GPLv2
@@ -59,6 +59,7 @@ BuildRequires:  perl-XML-Parser
 BuildRequires:  wget 
 BuildRequires:  curl 
 BuildRequires:  fftw-devel 
+BuildRequires:  gcc-gfortran
 BuildRequires:  lame-devel 
 BuildRequires:  twolame-devel 
 BuildRequires:  libjpeg-turbo-devel 
@@ -68,7 +69,7 @@ BuildRequires:  opus-devel
 BuildRequires:  libtheora-devel 
 BuildRequires:  ctags 
 BuildRequires:  libtiff-devel
-%if 0%{?fedora} <= 34
+%if 0%{?fedora} <= 35
 BuildRequires:  opencv-devel >= 4.4.0
 BuildRequires:	opencv-xfeatures2d-devel >= 4.4.0
 %endif
@@ -124,8 +125,11 @@ BuildRequires:  libaom-devel >= 2.0.0
 BuildRequires:  libaom-devel
 %endif
 BuildRequires:	pulseaudio-libs-devel
+%if 0%{?fedora} >= 35
+BuildRequires:	libpulsecommon-15.0.so
+%endif
 #----------------------------------------------------------------
-%if 0%{?fedora} <= 34
+%if 0%{?fedora} <= 35
 Recommends:	opencv-xfeatures2d >= 4.4.0
 Recommends:	python2-opencv >= 4.4.0
 %endif
@@ -167,7 +171,10 @@ jobs=$(grep processor /proc/cpuinfo | tail -1 | grep -o '[0-9]*')
 ./autogen.sh
 
 export FFMPEG_EXTRA_CFG=" --disable-doc --disable-debug --arch=%{_target_cpu} --disable-lto" 
-sed -i 's|local/lib/pkgconfig|local/lib/pkgconfig,/usr/lib64/pkgconfig|g' thirdparty/Makefile
+export CFLAGS='%{optflags}'
+sed -i "s|check_host_cflags -O3|check_host_cflags %{optflags}|" configure
+# Configure uses g77 by default, if present on system
+export F77=gfortran
 
 ./configure --prefix=%{_prefix} \
             --disable-dependency-tracking \
@@ -175,9 +182,9 @@ sed -i 's|local/lib/pkgconfig|local/lib/pkgconfig,/usr/lib64/pkgconfig|g' thirdp
             --with-jobs=$jobs \
             --enable-x265 \
             --enable-x264 \
-            --enable-fftw \
             --enable-flac \
-            --enable-lame \
+            --enable-lame=auto \
+            --enable-fftw=auto \
             --enable-opus \
             --enable-lv2=shared \
             --enable-lilv=shared \
@@ -185,7 +192,7 @@ sed -i 's|local/lib/pkgconfig|local/lib/pkgconfig,/usr/lib64/pkgconfig|g' thirdp
             --enable-sratom=shared \
             --enable-suil=shared \
             --with-pulse \
-            --with-opencv=sys 
+            --with-opencv=auto 
             
 #             --without-opencv \            
 #--with-opencv=sta,tar=https://cinelerra-gg.org/download/opencv/opencv-20200306.tgz 
@@ -216,6 +223,9 @@ make DESTDIR=%{buildroot} install V=0
 %{_metainfodir}/org.cinelerra_gg.cinelerra.metainfo.xml
 
 %changelog
+
+* Tue Feb 08 2022 David Va <davidva AT tuta DOT io> - 5.1-17
+- Updated to current commit
 
 * Mon Dec 14 2020 David Va <davidva AT tuta DOT io> - 5.1-16
 - Updated to current commit
